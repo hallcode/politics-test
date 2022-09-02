@@ -1,0 +1,29 @@
+.drop-zone {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+  position: fixed;
+  top: 166px;
+  height: 300px;
+  width: 100px;
+  padding: 1rem;
+  opacity: 0.66;
+  color: white;
+  font-weight: bold;
+  font-size: 1.13rem;
+  transition-duration: 130ms;
+}
+
+.drop-zone.left {
+  right: 100%;
+  border-top-right-radius: 100%;
+  border-bottom-right-radius: 100%;
+}
+
+.drop-zone.right {
+  left: 100%;
+  border-top-left-radius: 100%;
+  border-bottom-left-radius: 100%;
+}

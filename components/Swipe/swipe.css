@@ -1,0 +1,58 @@
+.swipe-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.swipe-control {
+  position: relative;
+  cursor: pointer;
+  touch-action: none;
+  user-select: none;
+  flex: 1 1 auto;
+  max-width: 420px;
+  height: 100%;
+}
+
+.swipe-control .right-focus-hint,
+.swipe-control .left-focus-hint {
+  display: none;
+  position: absolute;
+  border-radius: 0.5rem;
+  background-color: rgba(0, 0, 0, 0.66);
+  padding: 1rem;
+  text-align: center;
+  color: #fff;
+  cursor: initial;
+  width: 100px;
+  height: 100px;
+  left: 110%;
+}
+
+.swipe-control .left-focus-hint {
+  right: 110%;
+  left: unset;
+}
+
+.swipe-control:focus-visible .left-focus-hint,
+.swipe-control:focus-visible .right-focus-hint {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5em;
+}
+
+.swipe-control.active .left-focus-hint,
+.swipe-control.active .right-focus-hint {
+  display: none;
+}
+
+.swipe-control .right-focus-hint p,
+.swipe-control .left-focus-hint p {
+  margin: 0;
+  font-weight: bold;
+}
