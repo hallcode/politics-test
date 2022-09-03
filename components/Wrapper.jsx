@@ -1,4 +1,12 @@
-import { Paper, Title, Container, Divider, Text } from "@mantine/core";
+import {
+  Paper,
+  Title,
+  Container,
+  Divider,
+  Text,
+  Group,
+  Burger,
+} from "@mantine/core";
 
 export default function Wrapper({ children, ...props }) {
   const TEXT_PROPS = {
@@ -11,7 +19,10 @@ export default function Wrapper({ children, ...props }) {
     <>
       <Paper component="header" p="sm" radius={0} shadow="sm" withBorder>
         <Container size="sm">
-          <Title>The Politics Test</Title>
+          <Group position="apart">
+            <Title>The Politics Test</Title>
+            <Burger />
+          </Group>
         </Container>
       </Paper>
       <article>{children}</article>

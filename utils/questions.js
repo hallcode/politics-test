@@ -1,7 +1,7 @@
 const QUESTIONS = [
   {
     _id: "A1",
-    text: "This is the text of the first question that we're doing.",
+    text: "A child's parents are best placed to decide what it should be taught, not the community.",
     c: 2,
     i: 0,
     p: 3,
@@ -9,7 +9,7 @@ const QUESTIONS = [
   },
   {
     _id: "A2",
-    text: "Who was right, Karl Marx or Adam Smith? Do you think its possible for someone to agree with statements of both people.",
+    text: "Society should look after everyone, even if it means providing basic life services (food, housing etc) to people who refuse to participate in the community or economy.",
     c: 2,
     i: 0,
     p: 3,

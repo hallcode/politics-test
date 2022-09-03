@@ -119,7 +119,7 @@ export default function Swipe({ children, onChange, onDone, ...props }) {
         </div>
         <Paper
           shadow={isActive ? "md" : "sm"}
-          p="md"
+          p="lg"
           withBorder
           radius="lg"
           sx={{ width: "100%", height: "400px" }}

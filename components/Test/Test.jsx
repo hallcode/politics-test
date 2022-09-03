@@ -11,6 +11,7 @@ import {
   Progress,
   Stack,
   Image,
+  Divider,
 } from "@mantine/core";
 import { IconThumbDown, IconThumbUp, IconRefresh } from "@tabler/icons";
 import Swipe from "../Swipe/Swipe";
@@ -115,7 +116,21 @@ export default function Test() {
         mt={-1}
       >
         <Container size="sm">
-          <Progress value={progress} />
+          <Group align="center" position="center">
+            <Button
+              compact
+              variant="subtle"
+              size="sm"
+              uppercase
+              leftIcon={<IconRefresh size={18} />}
+              onClick={reset}
+            >
+              Restart
+            </Button>
+            <Box sx={{ flex: "1 1 auto" }}>
+              <Progress size="lg" value={progress} />
+            </Box>
+          </Group>
         </Container>
       </Paper>
       <Container size="sm" mt="md">
@@ -132,12 +147,16 @@ export default function Test() {
               >
                 Question {answers.length + 1}
               </Title>
-              <Text size="lg">{currentQuestion.text}</Text>
+              <Divider />
+              <Text size="lg" my="md">
+                {currentQuestion.text}
+              </Text>
             </Swipe>
 
             <Paper shadow="sm" radius="lg" p="sm" mt="lg">
               <Group component="footer" position="apart">
                 <Button
+                  onClick={() => handleDone(-1)}
                   size="lg"
                   radius="md"
                   uppercase
@@ -153,6 +172,7 @@ export default function Test() {
                   Disagree
                 </Button>
                 <Button
+                  onClick={() => handleDone(1)}
                   size="lg"
                   radius="md"
                   uppercase
