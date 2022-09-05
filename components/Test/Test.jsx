@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import "./test.css";
 import {
   Text,
@@ -13,11 +14,11 @@ import {
   Image,
   Divider,
 } from "@mantine/core";
-import { IconThumbDown, IconThumbUp, IconRefresh } from "@tabler/icons";
+import { IconThumbDown, IconThumbUp, IconRepeat } from "@tabler/icons";
 import Swipe from "../Swipe/Swipe";
 import QUESTIONS from "../../utils/questions";
 import { useLocalStorage } from "@mantine/hooks";
-import DoneSVG from "../../undraw_awesome.svg";
+import PageLayout from "../Page";
 
 function shuffle(array) {
   array.sort(() => Math.random() - 0.5);
@@ -26,11 +27,15 @@ function shuffle(array) {
 const TODAY = new Date();
 
 export default function Test() {
+  const navigate = useNavigate();
   const [value, setValue] = useState(0);
   const [currentQuestion, setQuestion] = useState(false);
   const [progress, setProgress] = useState(0);
   const [questions, setQuestions] = useState(QUESTIONS);
   const [testLength, _] = useState(QUESTIONS.length);
+
+  const [flashDisagree, setDisagreeFlash] = useState("none");
+  const [flashAgree, setAgreeFlash] = useState("none");
 
   const [answers, setAnswers] = useLocalStorage({
     key: "test-responses",
@@ -56,7 +61,6 @@ export default function Test() {
     questions.forEach((q) => {
       if (!completed_questions.includes(q._id)) {
         setQuestion(q);
-        console.log("Setting question", q._id);
         return;
       }
     });
@@ -69,12 +73,25 @@ export default function Test() {
   }, []);
 
   useEffect(() => {
-    console.log("answers or completedQuestions have changed");
+    if (value == 0) {
+      return;
+    }
+    setAgreeFlash("none");
+    setDisagreeFlash("none");
+  }, [value]);
 
+  useEffect(() => {
     if (Array.isArray(completedQuestions)) {
       getNextQuestion(completedQuestions);
     }
   }, [answers, completedQuestions]);
+
+  useEffect(() => {
+    // If done, redirect to results page
+    if (progress >= 100) {
+      navigate("/results");
+    }
+  }, [progress]);
 
   const handleDone = (v) => {
     if (v == 0) {
@@ -95,45 +112,102 @@ export default function Test() {
     response["response"] = v;
     let newAnswers = [...answers];
     newAnswers.push(response);
-    console.log("setting answers", answers, newAnswers);
     setAnswers(newAnswers);
+
+    // Flash button
+    flashButton(v);
   };
 
   const reset = () => {
+    setAgreeFlash("none");
+    setDisagreeFlash("none");
     setAnswers([]);
     setCompleted([]);
     getNextQuestion([]);
   };
 
+  const flashButton = (choice) => {
+    if (choice > 0) {
+      setDisagreeFlash("none");
+      setAgreeFlash("flash");
+      return;
+    }
+
+    setAgreeFlash("none");
+    setDisagreeFlash("flash");
+  };
+
+  const ActionButtons = () => {
+    return (
+      <Container size="sm" p="md">
+        <Group component="footer" position="apart">
+          <Button
+            id="disagree-button"
+            data-flash={flashDisagree}
+            onClick={() => handleDone(-1)}
+            size="lg"
+            radius="md"
+            uppercase
+            leftIcon={<IconThumbDown />}
+            sx={(theme) => ({
+              backgroundImage: theme.fn.gradient({
+                from: "red",
+                to: "pink",
+                deg: 45,
+              }),
+            })}
+          >
+            Disagree
+          </Button>
+          <Button
+            id="agree-button"
+            data-flash={flashAgree}
+            onClick={() => handleDone(1)}
+            size="lg"
+            radius="md"
+            uppercase
+            rightIcon={<IconThumbUp />}
+            sx={(theme) => ({
+              backgroundImage: theme.fn.gradient({
+                from: "green",
+                to: "lime",
+                deg: 45,
+              }),
+            })}
+          >
+            Agree
+          </Button>
+        </Group>
+      </Container>
+    );
+  };
+
+  const Header = () => (
+    <Container size="sm">
+      <Group align="center" position="center">
+        <Button
+          compact
+          variant="subtle"
+          size="sm"
+          uppercase
+          leftIcon={<IconRepeat size={18} />}
+          onClick={reset}
+        >
+          Restart
+        </Button>
+        <Box sx={{ flex: "1 1 auto" }}>
+          <Progress size="lg" value={progress} />
+        </Box>
+      </Group>
+    </Container>
+  );
+
   return (
-    <>
-      <Paper
-        component="header"
-        p="sm"
-        radius={0}
-        shadow="sm"
-        withBorder
-        mt={-1}
-      >
-        <Container size="sm">
-          <Group align="center" position="center">
-            <Button
-              compact
-              variant="subtle"
-              size="sm"
-              uppercase
-              leftIcon={<IconRefresh size={18} />}
-              onClick={reset}
-            >
-              Restart
-            </Button>
-            <Box sx={{ flex: "1 1 auto" }}>
-              <Progress size="lg" value={progress} />
-            </Box>
-          </Group>
-        </Container>
-      </Paper>
-      <Container size="sm" mt="md">
+    <PageLayout
+      headerChildren={<Header />}
+      footerChildren={progress < 100 && <ActionButtons />}
+    >
+      <Container size="sm" my="md">
         {currentQuestion && (
           <>
             <Swipe
@@ -141,84 +215,26 @@ export default function Test() {
               onDone={handleDone}
             >
               <Title
-                size="md"
+                size="h4"
                 sx={(theme) => ({ color: theme.primaryColor })}
                 mb="md"
               >
                 Question {answers.length + 1}
               </Title>
               <Divider />
-              <Text size="lg" my="md">
+              <Text size="xl" my="md">
                 {currentQuestion.text}
               </Text>
             </Swipe>
-
-            <Paper shadow="sm" radius="lg" p="sm" mt="lg">
-              <Group component="footer" position="apart">
-                <Button
-                  onClick={() => handleDone(-1)}
-                  size="lg"
-                  radius="md"
-                  uppercase
-                  leftIcon={<IconThumbDown />}
-                  sx={(theme) => ({
-                    backgroundImage: theme.fn.gradient({
-                      from: "red",
-                      to: "pink",
-                      deg: 45,
-                    }),
-                  })}
-                >
-                  Disagree
-                </Button>
-                <Button
-                  onClick={() => handleDone(1)}
-                  size="lg"
-                  radius="md"
-                  uppercase
-                  rightIcon={<IconThumbUp />}
-                  sx={(theme) => ({
-                    backgroundImage: theme.fn.gradient({
-                      from: "green",
-                      to: "lime",
-                      deg: 45,
-                    }),
-                  })}
-                >
-                  Agree
-                </Button>
-              </Group>
-            </Paper>
           </>
-        )}
-
-        {progress >= 100 && (
-          <Paper withBorder shadow="md" p="md" radius="lg">
-            <Stack align="center" spacing="lg">
-              <Title align="center" color="dark">
-                All done!
-              </Title>
-              <Text align="center" color="dimmed" size="lg">
-                You completed the test on {completedDate}
-              </Text>
-              <Image width={250} fit="contain" src={DoneSVG} />
-              <Group>
-                <Button>View results</Button>
-                <Button
-                  variant="outline"
-                  leftIcon={<IconRefresh />}
-                  onClick={reset}
-                >
-                  Restart
-                </Button>
-              </Group>
-            </Stack>
-          </Paper>
         )}
 
         <Box
           className="drop-zone left"
-          style={{ right: value < 0 ? "calc(100% - 100px)" : "100%" }}
+          style={{
+            right: value < 0 ? "calc(100% - 100px)" : "100%",
+            zIndex: 2000,
+          }}
           sx={(theme) => ({
             backgroundImage: theme.fn.gradient({
               from: "red",
@@ -232,7 +248,10 @@ export default function Test() {
         </Box>
         <Box
           className="drop-zone right"
-          style={{ left: value > 0 ? "calc(100% - 100px)" : "100%" }}
+          style={{
+            left: value > 0 ? "calc(100% - 100px)" : "100%",
+            zIndex: 2000,
+          }}
           sx={(theme) => ({
             backgroundImage: theme.fn.gradient({
               from: "green",
@@ -245,6 +264,6 @@ export default function Test() {
           Agree
         </Box>
       </Container>
-    </>
+    </PageLayout>
   );
 }

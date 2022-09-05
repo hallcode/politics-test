@@ -17,6 +17,10 @@
   height: 100%;
 }
 
+.swipe-control.active {
+  z-index: 500;
+}
+
 .swipe-control .right-focus-hint,
 .swipe-control .left-focus-hint {
   display: none;
