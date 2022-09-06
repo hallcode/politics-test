@@ -1,4 +1,6 @@
+import { useTheme } from "@emotion/react";
 import { Text, Container, Paper, Box } from "@mantine/core";
+import { useColorScheme } from "@mantine/hooks";
 
 const TEXT_PROPS = {
   size: "small",
@@ -13,6 +15,11 @@ export default function PageLayout({
   footerChildren,
   ...props
 }) {
+  const colorScheme = useColorScheme();
+  const theme = useTheme();
+  const borderColor =
+    colorScheme == "light" ? theme.colors.gray[4] : theme.colors.gray[8];
+
   return (
     <>
       {headerChildren && (
@@ -21,24 +28,23 @@ export default function PageLayout({
           p="sm"
           radius={0}
           shadow="sm"
-          withBorder
-          sx={{ zIndex: 100, position: "sticky", top: 0, margin: "0 -1px" }}
+          sx={{
+            zIndex: 100,
+            position: "sticky",
+            top: 0,
+          }}
         >
           {headerChildren}
         </Paper>
       )}
-      <Box sx={{ flex: footerChildren ? "initial" : "1 0 auto" }}>
-        {children}
-      </Box>
+      <Box sx={{ flex: "1 0 auto", minHeight: "80vh" }}>{children}</Box>
       {footerChildren && (
         <Paper
           radius={0}
-          withBorder
           sx={(theme) => ({
             position: "sticky",
-            flex: "1 0 auto",
             bottom: 0,
-            margin: "0 -1px",
+            borderTop: `1px solid ${borderColor}`,
           })}
         >
           {footerChildren}
@@ -46,10 +52,9 @@ export default function PageLayout({
       )}
       <Paper
         component="footer"
-        withBorder
         radius={0}
         shadow="md"
-        sx={{ margin: "0 -1px" }}
+        sx={(theme) => ({ borderTop: `1px solid ${borderColor}` })}
       >
         <Container size="sm" p="lg">
           <Text {...TEXT_PROPS}>

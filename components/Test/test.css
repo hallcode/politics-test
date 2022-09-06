@@ -4,28 +4,40 @@
   justify-content: center;
   align-items: center;
   z-index: 100;
-  position: fixed;
-  top: 166px;
-  height: 300px;
-  width: 100px;
+
   padding: 1rem;
   opacity: 0.66;
   color: white;
   font-weight: bold;
   font-size: 1.13rem;
   transition-duration: 130ms;
+
+  height: 60vh;
+  width: 20vw;
+  position: fixed;
+  top: 20vh;
 }
 
 .drop-zone.left {
-  right: 100%;
-  border-top-right-radius: 100%;
-  border-bottom-right-radius: 100%;
+  border-top-right-radius: 10vw;
+  border-bottom-right-radius: 10vw;
+  left: 0;
+  transform: translateX(-101%);
 }
 
 .drop-zone.right {
-  left: 100%;
-  border-top-left-radius: 100%;
-  border-bottom-left-radius: 100%;
+  border-top-left-radius: 10vw;
+  border-bottom-left-radius: 10vw;
+  left: 100vw;
+  transform: translateX(0%);
+}
+
+.drop-zone.active {
+  transform: translateX(0);
+}
+
+.drop-zone.right.active {
+  transform: translateX(-100%);
 }
 
 @media screen and (max-width: 650px) {

@@ -10,6 +10,7 @@ import {
 } from "@mantine/core";
 import FullLogo from "../tpt_logo.svg";
 import { useColorScheme } from "@mantine/hooks";
+import { useTheme } from "@emotion/react";
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 
@@ -25,6 +26,10 @@ export default function Wrapper({ children, ...props }) {
   const location = useLocation();
   const [menu, setMenu] = useState(false);
 
+  const theme = useTheme();
+  const borderColor =
+    colorScheme == "light" ? theme.colors.gray[4] : theme.colors.gray[8];
+
   useEffect(() => setMenu(false), [location]);
 
   const TEXT_PROPS = {
@@ -39,8 +44,7 @@ export default function Wrapper({ children, ...props }) {
         spacing={0}
         sx={{
           minHeight: "100vh",
-          maxWidth: "100vw",
-          overflowX: "hidden",
+          width: "100%",
         }}
       >
         <Paper
@@ -48,8 +52,7 @@ export default function Wrapper({ children, ...props }) {
           p="sm"
           radius={0}
           shadow="sm"
-          withBorder
-          sx={{ zIndex: 50, margin: "-1px" }}
+          sx={{ zIndex: 50, borderBottom: `1px solid ${borderColor}` }}
         >
           <Container size="sm">
             <Group position="apart">
@@ -62,11 +65,12 @@ export default function Wrapper({ children, ...props }) {
           component="article"
           spacing={0}
           sx={(theme) => ({
+            position: "relative",
             flex: "1 0 auto",
             backgroundColor:
               colorScheme == "light"
                 ? theme.colors.gray[2]
-                : theme.colors.dark[8],
+                : theme.colors.dark[9],
           })}
         >
           {children}

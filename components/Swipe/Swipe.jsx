@@ -1,9 +1,5 @@
 import { Paper } from "@mantine/core";
-import {
-  IconArrowBigLeft,
-  IconArrowBigRight,
-  IconArrowLeftTail,
-} from "@tabler/icons";
+import { IconArrowBigLeft, IconArrowBigRight } from "@tabler/icons";
 import { useState, useEffect } from "react";
 import "./swipe.css";
 
@@ -25,6 +21,12 @@ export default function Swipe({ children, onChange, onDone, ...props }) {
     }
     onChange(value);
   }, [value]);
+
+  useEffect(() => {
+    if (!isActive) {
+      setValue(0);
+    }
+  }, [isActive]);
 
   const handleTouch = (e) => {
     setClasses(CARD_CLASS + " " + ACTIVE_CLASS);
@@ -81,12 +83,28 @@ export default function Swipe({ children, onChange, onDone, ...props }) {
 
   const handleKeyPress = (e) => {
     if (e.code == "ArrowLeft") {
-      setValue(-1);
+      setClasses(CARD_CLASS);
+      setActive(false);
+      setOffset(0);
+      setStartPos(0);
+      setRotation(0);
+
+      if (onDone == undefined) {
+        return;
+      }
       onDone(-1);
     }
 
     if (e.code == "ArrowRight") {
-      setValue(1);
+      setClasses(CARD_CLASS);
+      setActive(false);
+      setOffset(0);
+      setStartPos(0);
+      setRotation(0);
+
+      if (onDone == undefined) {
+        return;
+      }
       onDone(1);
     }
   };

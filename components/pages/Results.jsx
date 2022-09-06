@@ -5,6 +5,8 @@ import PageLayout from "../Page";
 import calculateResults from "../../utils/calculator";
 import { useState, useEffect } from "react";
 import { IconRepeat } from "@tabler/icons";
+import "./results.css";
+import ResultsGraph from "../ResultsGraph";
 
 const TODAY = new Date();
 
@@ -67,7 +69,9 @@ export default function Results() {
             </Title>
           </Card>
 
-          <Card withBorder shadow="sm"></Card>
+          <Card withBorder shadow="sm">
+            <ResultsGraph ci={scores[0]} pt={scores[1]} />
+          </Card>
         </Stack>
       </Container>
     </PageLayout>

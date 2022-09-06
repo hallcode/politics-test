@@ -11,17 +11,21 @@ import {
   Box,
   Progress,
   Stack,
-  Image,
   Divider,
 } from "@mantine/core";
-import { IconThumbDown, IconThumbUp, IconRepeat } from "@tabler/icons";
+import {
+  IconThumbDown,
+  IconThumbUp,
+  IconRepeat,
+  IconArrowsLeftRight,
+} from "@tabler/icons";
 import Swipe from "../Swipe/Swipe";
 import QUESTIONS from "../../utils/questions";
 import { useLocalStorage } from "@mantine/hooks";
 import PageLayout from "../Page";
 
 function shuffle(array) {
-  array.sort(() => Math.random() - 0.5);
+  array.sort(() => Math.random() > 0.5);
 }
 
 const TODAY = new Date();
@@ -214,25 +218,31 @@ export default function Test() {
               onChange={(new_value) => setValue(new_value)}
               onDone={handleDone}
             >
-              <Title
-                size="h4"
-                sx={(theme) => ({ color: theme.primaryColor })}
-                mb="md"
-              >
-                Question {answers.length + 1}
-              </Title>
-              <Divider />
-              <Text size="xl" my="md">
-                {currentQuestion.text}
-              </Text>
+              <Stack sx={{ height: "100%" }}>
+                <Title
+                  size="h4"
+                  sx={(theme) => ({ color: theme.primaryColor })}
+                >
+                  Question {answers.length + 1}
+                </Title>
+                <Divider />
+                <Text size="xl" sx={{ flex: "1 0 auto" }}>
+                  {currentQuestion.text}
+                </Text>
+                {progress == 0 && (
+                  <Paper align="center" withBorder radius="md" p="sm">
+                    <IconArrowsLeftRight size={32} />
+                    <Text>Swipe to agree / disagree</Text>
+                  </Paper>
+                )}
+              </Stack>
             </Swipe>
           </>
         )}
 
         <Box
-          className="drop-zone left"
+          className={value < 0 ? "drop-zone left active" : "drop-zone left"}
           style={{
-            right: value < 0 ? "calc(100% - 100px)" : "100%",
             zIndex: 2000,
           }}
           sx={(theme) => ({
@@ -247,9 +257,8 @@ export default function Test() {
           Disagree
         </Box>
         <Box
-          className="drop-zone right"
+          className={value > 0 ? "drop-zone right active" : "drop-zone right"}
           style={{
-            left: value > 0 ? "calc(100% - 100px)" : "100%",
             zIndex: 2000,
           }}
           sx={(theme) => ({
