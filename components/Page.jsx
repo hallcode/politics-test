@@ -27,11 +27,11 @@ export default function PageLayout({
           component="header"
           p="sm"
           radius={0}
-          shadow="sm"
           sx={{
             zIndex: 100,
             position: "sticky",
             top: 0,
+            borderBottom: `1px solid ${borderColor}`,
           }}
         >
           {headerChildren}
@@ -41,11 +41,11 @@ export default function PageLayout({
       {footerChildren && (
         <Paper
           radius={0}
-          sx={(theme) => ({
+          sx={{
             position: "sticky",
             bottom: 0,
             borderTop: `1px solid ${borderColor}`,
-          })}
+          }}
         >
           {footerChildren}
         </Paper>
@@ -53,8 +53,7 @@ export default function PageLayout({
       <Paper
         component="footer"
         radius={0}
-        shadow="md"
-        sx={(theme) => ({ borderTop: `1px solid ${borderColor}` })}
+        sx={{ borderTop: `1px solid ${borderColor}` }}
       >
         <Container size="sm" p="lg">
           <Text {...TEXT_PROPS}>

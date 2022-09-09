@@ -38,6 +38,7 @@ export default function Wrapper({ children, ...props }) {
     color: "dimmed",
     mb: ".5em",
   };
+
   return (
     <>
       <Stack
@@ -51,12 +52,13 @@ export default function Wrapper({ children, ...props }) {
           component="header"
           p="sm"
           radius={0}
-          shadow="sm"
           sx={{ zIndex: 50, borderBottom: `1px solid ${borderColor}` }}
         >
           <Container size="sm">
             <Group position="apart">
-              <Image src={FullLogo} height={50} width="auto" />
+              <a href="/">
+                <Image src={FullLogo} height={50} width="auto" />
+              </a>
               <Burger opened={menu} onClick={() => setMenu(!menu)} />
             </Group>
           </Container>
@@ -67,10 +69,6 @@ export default function Wrapper({ children, ...props }) {
           sx={(theme) => ({
             position: "relative",
             flex: "1 0 auto",
-            backgroundColor:
-              colorScheme == "light"
-                ? theme.colors.gray[2]
-                : theme.colors.dark[9],
           })}
         >
           {children}
