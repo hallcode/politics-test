@@ -8,7 +8,6 @@ import {
   Drawer,
   NavLink,
 } from "@mantine/core";
-import FullLogo from "../tpt_logo.svg";
 import { useColorScheme } from "@mantine/hooks";
 import { useTheme } from "@emotion/react";
 import { useState, useEffect } from "react";
@@ -57,7 +56,11 @@ export default function Wrapper({ children, ...props }) {
           <Container size="sm">
             <Group position="apart">
               <a href="/">
-                <Image src={FullLogo} height={50} width="auto" />
+                <Image
+                  src="https://www.politicstest.com/s/static/tpt_logo.svg"
+                  height={50}
+                  width="auto"
+                />
               </a>
               <Burger opened={menu} onClick={() => setMenu(!menu)} />
             </Group>
