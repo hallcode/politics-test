@@ -144,7 +144,12 @@ export default function Results() {
                 <Title align="center" size="h4">
                   Congratulations, you're a
                 </Title>
-                <Title size={40} align="center" color={colour}>
+                <Title
+                  size={40}
+                  align="center"
+                  color={colour}
+                  sx={{ textTransform: "capitalize" }}
+                >
                   {description}
                 </Title>
                 <Card withBorder>

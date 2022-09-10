@@ -8,6 +8,9 @@ import THEME from "./utils/theme";
 
 import { MantineProvider } from "@mantine/core";
 import { useColorScheme } from "@mantine/hooks";
+import Index from "./components/pages/Index";
+import About from "./components/pages/About";
+import Policy from "./components/pages/Policy";
 
 function App() {
   const userScheme = useColorScheme();
@@ -20,6 +23,9 @@ function App() {
       <BrowserRouter>
         <Wrapper>
           <Routes>
+            <Route index element={<Index />} />
+            <Route path="about" element={<About />} />
+            <Route path="terms" element={<Policy />} />
             <Route path="test" element={<Test />} />
             <Route path="results" element={<Results />} />
           </Routes>
