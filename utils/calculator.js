@@ -69,8 +69,6 @@ export function getDescription({ ci, tp }) {
     return a_dist - b_dist;
   });
 
-  console.log(positions);
-
   return positions[0][1];
 }
 
@@ -84,8 +82,6 @@ export function getColour({ ci, tp }) {
     let b_dist = distance(b[0], pos);
     return a_dist - b_dist;
   });
-
-  console.log(positions);
 
   return positions[0][2];
 }
